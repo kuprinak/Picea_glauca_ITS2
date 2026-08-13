@@ -21,50 +21,45 @@ library(dplyr)
 #install.packages("rlang", type = "binary")
 install.packages("devtools")
 devtools::install_github("AllanBuras/dendRolAB")
+
 #-------------###READ THE DATA### -------------------------
 setwd("C:/Users/Samsung/Desktop/R-Alaska")
 
 getwd()
 list.files()
+
 ######### Load the data## 
-FB <- read.rwl("FB.rwl", format="tucson")
+FB <- read.rwl("FB_2022.rwl", format="tucson")
 IDs1 <- read.ids(FB, stc=c(0,5,1))
 F_B <-  treeMean(rwl=FB, ids = IDs1 , na.rm=TRUE)
 
-DF <- read.rwl("DF.rwl", format="tucson")
+DF <- read.rwl("DF_2022.rwl", format="tucson")
 IDs2 <- read.ids(DF, stc=c(0,5,1))
 D_F<-  treeMean(rwl=DF, ids = IDs2 , na.rm=TRUE)
 
-DT<- read.rwl("DT.rwl", format="tucson")
+DT<- read.rwl("DT_2022.rwl", format="tucson")
 IDs3 <- read.ids(DT, stc=c(2,3,1))
 D_T<-  treeMean(rwl=DT, ids = IDs3 , na.rm=TRUE)
 colnames(D_T) <- paste0("PE", colnames(D_T))
 
-BF <- read.rwl("BF.rwl", format="tucson")
+BF <- read.rwl("BF_2022.rwl", format="tucson")
 IDs4 <- read.ids(BF, stc=c(2,3,1))
 B_F<-  treeMean(rwl=BF, ids = IDs4 , na.rm=TRUE)
 colnames(B_F) <- paste0("BF", colnames(B_F))
 
-BT<- read.rwl("BT.rwl", format="tucson")
+BT<- read.rwl("BT_2022.rwl", format="tucson")
 IDs5 <- read.ids(BT, stc=c(2,3,1))
 B_T<-  treeMean(rwl=BT, ids = IDs5 , na.rm=TRUE)
 colnames(B_T) <- paste0("BT", colnames(B_T))
 
 ################################################################
-Bluff_Fairbanks <- read.rwl("Bluff_Fairbanks.rwl", format="tucson")
+Bluff_Fairbanks <- read.rwl("IF_IT_2012.rwl", format="tucson")
 
-Denali_Forest <- read.rwl("Denali_Forest_2012.rwl", format="tucson")
-Denali_Forest1 <- read.rwl("Denali_Forest.rwl", format="tucson")
-Denali_Forest <- combine.rwl(Denali_Forest, Denali_Forest1)
+Denali_Forest <- read.rwl("AF_2012.rwl", format="tucson")
+Denali_Treeline <- read.rwl("AT_2012.rwl", format="tucson")
 
-Denali_Treeline <- read.rwl("Denali_Treeline.rwl", format="tucson")
-Denali_Treeline1 <- read.rwl("Denali_Treeline (2).rwl", format="tucson")
-Denali_Treeline <- combine.rwl(Denali_Treeline, Denali_Treeline1)
-
-Brooks_Range_Forest <- read.rwl("Brooks_Range_Forest.rwl", format="tucson")
-
-Brooks_Range_Treeline <- read.rwl("Brooks_Range_Treeline.rwl", format="tucson")
-
+Brooks_Range_Forest <- read.rwl("BF_2012.rwl", format="tucson")
+Brooks_Range_Treeline <- read.rwl("BT_2012.rwl", format="tucson")
 
 ########################Combine datasets#########################
 All_FB <- combine.rwl(F_B, Bluff_Fairbanks)
