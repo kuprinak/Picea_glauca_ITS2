@@ -206,7 +206,11 @@ Brooks_Range_Treeline_DBH <- Combined_Data %>%
   mutate(DBH_cm = coalesce(DBH_cm.x, DBH_cm.y)) %>%
   select(ID, DBH_cm)
 rownames(Brooks_Range_Treeline_DBH) <- Brooks_Range_Treeline_DBH$ID
+```
 
+### BAI calculation: Interior Alaska (AKA Fairbanks)
+
+```{r}
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Bluff_Fairbanks_DBH$DBH_cm)
 sapply(Bluff_Fairbanks_DBH, class)
@@ -251,14 +255,13 @@ if(any(is.na(Bluff_Fairbanks_DBH_Clean$ID))) {
   stop("There are still NAs in your ID column!")
 }
 
-```
-
-### BAI calculation
-
-```{r}
 # Run the calculation using the new 'Sub' object
 BAI_Bluff_Fairbanks <- bai.out(Bluff_Fairbanks_Sub, diam = Bluff_Fairbanks_DBH_Clean)
+```
 
+### BAI calculation: Alaska Range (AKA Denali) forest
+
+```{r}
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Denali_Forest_DBH$DBH_cm)
 sapply(Denali_Forest_DBH, class)
@@ -305,7 +308,11 @@ if(any(is.na(Denali_Forest_DBH_Clean$ID))) {
 # Run the calculation using the new 'Sub' object
 BAI_Denali_Forest <- bai.out(Denali_Forest_Sub, diam = Denali_Forest_DBH_Clean)
 
+```
 
+### BAI calculation: Alaska Range (AKA Denali) treeline
+
+```{r}
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Denali_Treeline_DBH$DBH_cm)
 sapply(Denali_Treeline_DBH, class)
@@ -313,8 +320,7 @@ B <- transform(Denali_Treeline_DBH, DBH = as.numeric(DBH_cm))
 sapply(B, class)
 B[,2]<-B[,2]*10# # conversion in mm# # # cm to mm conversion
 rownames(B)<-B[,1]# # assure the correct assignment# # 
-head(B)
-B
+
 B<-B[colnames(All_DT ),]#using the column of AV.RWJF to order A
 Denali_Treeline_DBH <- B[ ,c("ID","DBH_cm","DBH")]
 years <- as.numeric(rownames(All_DT ))  # years in the tree-ring data
@@ -354,7 +360,11 @@ if(any(is.na(Denali_Treeline_DBH_Clean$ID))) {
 #  Run the calculation using the new 'Sub' object
 BAI_Denali_Treeline <- bai.out(Denali_Treeline_Sub, diam = Denali_Treeline_DBH_Clean)
 
+```
 
+### BAI calculation: Brooks Range forest
+
+```{r}
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Brooks_Range_Forest_DBH$DBH_cm)
 sapply(Brooks_Range_Forest_DBH, class)
@@ -400,7 +410,11 @@ if(any(is.na(Brooks_Range_Forest_DBH_Clean$ID))) {
 
 # Run the calculation using the new 'Sub' object
 BAI_Brooks_Range_Forest <- bai.out(Brooks_Range_Forest_Sub, diam = Brooks_Range_Forest_DBH_Clean)
+```
 
+### BAI calculation: Brooks Range forest
+
+```{r}
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Brooks_Range_Treeline_DBH$DBH_cm)
 sapply(Brooks_Range_Treeline_DBH, class)
@@ -408,8 +422,6 @@ B <- transform(Brooks_Range_Treeline_DBH, DBH = as.numeric(DBH_cm))
 sapply(B, class)
 B[,2]<-B[,2]*10# # conversion in mm# # # cm to mm conversion
 rownames(B)<-B[,1]# # assure the correct assignment# # 
-head(B)
-B
 B<-B[colnames(All_BT ),]#using the column of AV.RWJF to order A
 Brooks_Range_Treeline_DBH <- B[ ,c("ID","DBH_cm","DBH")]
 years <- as.numeric(rownames(All_BT ))  # years in the tree-ring data
@@ -448,29 +460,29 @@ if(any(is.na(Brooks_Range_Treeline_DBH_Clean$ID))) {
 
 # Run the calculation using the new 'Sub' object
 BAI_Brooks_Range_Treeline <- bai.out(Brooks_Range_Treeline_Sub, diam = Brooks_Range_Treeline_DBH_Clean)
+```
 
 ### Write the output
 
 ```{r}
-
 write.csv(as.data.frame(BAI_Bluff_Fairbanks), "Bluff_Fairbanks_output.csv", row.names = TRUE)
 write.csv(as.data.frame(BAI_Denali_Forest), "Denali_Forest_output.csv", row.names = TRUE)
 write.csv(as.data.frame(BAI_Denali_Treeline), "Denali_Treeline_output.csv", row.names = TRUE)
 write.csv(as.data.frame(BAI_Brooks_Range_Forest), "Brooks_Range_Forest_output.csv", row.names = TRUE)
 write.csv(as.data.frame(BAI_Brooks_Range_Treeline), "Brooks_Range_Treeline_output.csv", row.names = TRUE)
 
-#----------###SPLINE Detrend######--------------------
+#SPLINE Detrend:
 FBDET <- detrend(rwl =BAI_Bluff_Fairbanks, method = c("Spline"), nyrs = 30, f = 0.5, pos.slope = FALSE)
 DFDET <- detrend(rwl =BAI_Denali_Forest, method = c("Spline"), nyrs = 30, f = 0.5, pos.slope = FALSE)
 DTDET <- detrend(rwl =BAI_Denali_Treeline, method = c("Spline"), nyrs = 30, f = 0.5, pos.slope = FALSE)
 BFDET <- detrend(rwl =BAI_Brooks_Range_Forest, method = c("Spline"), nyrs = 30, f = 0.5, pos.slope = FALSE)
 BTDET <- detrend(rwl =BAI_Brooks_Range_Treeline, method = c("Spline"), nyrs = 30, f = 0.5, pos.slope = FALSE)
 
-
 write.csv(as.data.frame(FBDET), "Bluff_Fairbanks_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(DFDET), "Denali_Forest_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(DTDET), "Denali_Treeline_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(BFDET), "Brooks_Range_Forest_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(BTDET), "Brooks_Range_Treeline_output1.csv", row.names = TRUE)
+```
 
 ```
