@@ -27,7 +27,7 @@ flowchart TB
     R --> Guild([Guild relative abundance])
 
 
-Tree_data@{shape: procs, label: "Ring data, DBH"} --> R1([R: BAI_calculation.Rmd]) --> BAI@{shape: procs, label: "detrended BAI"} --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"} --> R
+Tree_data@{shape: procs, label: "Ring data, DBH"} --> R1([R: BAI_calculation.Rmd]) --> BAI@{shape: procs, label: "detrended BAI"} --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txt"} --> R
 Data@{shape: procs, label: "Tree age, height, soil pH"}   --> Sam_inf
 
 ```
