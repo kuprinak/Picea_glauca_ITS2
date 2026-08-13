@@ -10,8 +10,7 @@ A study examining the connection between root-associated fungi and the growth pe
 ```mermaid
 flowchart TB
 
-Tree_data2([Tree data, soil pH]) --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
-Tree_data([Tree ring data]) --> BAI([BAI]) --> Sam_inf
+Tree_data@{shape: procs, label: "Tree data, BAI, soil pH"}--> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
 
 Sam_inf --> R([R])
 
@@ -27,8 +26,6 @@ Sam_inf --> R([R])
     T --> Ta@{shape: procs, label: "Alaska_taxonomy.txt"} --> R([R])
     Ta --> F([FUNGuild v.1.1 database]);
     F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"} --> R([R])
-    CV --> D([DESeq2]);
-    D --> N@{shape: procs, label: "Normalized and filtered read counts"} --> R([R])
     R([R]) --> alpha([Alpha diversity])
     R([R]) --> beta([Beta diversity])
     R([R]) --> Guild([Guild relative abundance])
