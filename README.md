@@ -9,27 +9,28 @@ A study examining the connection between root-associated fungi and the growth pe
 
 ```mermaid
 flowchart TB
-    A@{shape: procs, label: "Illumina raw reads"} --> B([Trimmomatic]);
+
+Tree_data2([Tree data, soil pH]) --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
+Tree_data([Tree ring data]) --> BAI([BAI]) --> Sam_inf
+
+Sam_inf --> R([R])
+
+ A@{shape: procs, label: "Illumina raw reads"} --> B([Trimmomatic]);
     A --> Fa;
     Fa --> Mu([MultiQC]);
-    B --> C@{shape: procs, label: "Trimmed reads (NCBI: PRJNA1185013)"};
+    B --> C@{shape: procs, label: "Trimmed reads (NCBI: PRJNA1335163)"};
     C --> Fa([FastQC]);
     Mu --> Mur@{shape: procs, label: "MultiQC_raw_reads.html, MultiQC_trimmed_reads.html"}; 
     C --> V([VSEARCH]);
     V --> T([UNITE v9.0 database]);
-    T --> CV@{shape: procs, label: "Raw_Counts.txt"};
-    T --> Ta@{shape: procs, label: "Taxonomy.txt"};
+    T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R])
+    T --> Ta@{shape: procs, label: "Alaska_taxonomy.txt"} --> R([R])
     Ta --> F([FUNGuild v.1.1 database]);
-    F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"};
-    Gu --> rs([rstatix])
+    F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"} --> R([R])
     CV --> D([DESeq2]);
-    D --> N@{shape: procs, label: "Normalized and filtered read counts"};
-    Ta --> Mi;
-    Ta --> Me
-    Ta --> Ph
-    N --> Ph([phyloseq])
-     N --> Mi([microeco])
-    N --> Me([metacoder])
-    Ta --> iN([iNEXT]);
+    D --> N@{shape: procs, label: "Normalized and filtered read counts"} --> R([R])
+    R([R]) --> alpha([Alpha diversity])
+    R([R]) --> beta([Beta diversity])
+    R([R]) --> Guild([Guild relative abundance])
 
 ```
