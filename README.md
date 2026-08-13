@@ -18,7 +18,7 @@ flowchart TB
     Mu --> Mur@{shape: procs, label: "MultiQC_raw_reads.html, MultiQC_trimmed_reads.html"}; 
     C --> V([VSEARCH]);
     V --> T([UNITE v9.0 database]);
-    T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R: Distribution_Growth.html; Metabarcoding.html; Metabarcoding_GAM_Growth-vs-RAF-diversity.html; Metabarcoding_Trophic-Guilds.html])
+    T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R: Distribution_Growth.html, Metabarcoding.html, Metabarcoding_GAM_Growth-vs-RAF-diversity.html, Metabarcoding_Trophic-Guilds.html])
     T --> Ta@{shape: procs, label: "Alaska_taxonomy.txt"} --> R
     Ta --> F([FUNGuild v.1.1 database]);
     F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"} --> R
