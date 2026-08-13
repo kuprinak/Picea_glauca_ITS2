@@ -1,5 +1,5 @@
 
-### These files are the dataset on tree ring width from previous studies.
+### These files are the comprehensive tree-ring dataset from previous studies.
 
 > [!TIP]
 > Interior Alaska: FB.rwl, Bluff_Fairbanks.rwl
