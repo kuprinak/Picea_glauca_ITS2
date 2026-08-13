@@ -1,12 +1,12 @@
 
-#rm(list=ls())#if to delete files from environment####
-rm(list=ls())
-#####################################
-install.packages("dplR")
-install.packages("detrendeR")
-install.packages("treeclim")
-install.packages("ggplot2")
-install.packages("dendRolAB")
+### Packages
+
+```{r}
+#install.packages("dplR")
+#install.packages("detrendeR")
+#install.packages("treeclim")
+#install.packages("ggplot2")
+#install.packages("dendRolAB")
 library(ggplot2)
 library(dplR)
 library(detrendeR)
@@ -14,21 +14,18 @@ library(treeclim)
 library(dendRolAB)
 library(DendroEco)
 library(tidyr)
-install.packages("readxl")
+#install.packages("readxl")
 library(readxl)
-install.packages("dplyr")
+#install.packages("dplyr")
 library(dplyr)
 #install.packages("rlang", type = "binary")
-install.packages("devtools")
-devtools::install_github("AllanBuras/dendRolAB")
+#install.packages("devtools")
+#devtools::install_github("AllanBuras/dendRolAB")
+```
 
-#-------------###READ THE DATA### -------------------------
-setwd("C:/Users/Samsung/Desktop/R-Alaska")
+### Read the data
 
-getwd()
-list.files()
-
-######### Load the data## 
+```{r}
 FB <- read.rwl("FB_2022.rwl", format="tucson")
 IDs1 <- read.ids(FB, stc=c(0,5,1))
 F_B <-  treeMean(rwl=FB, ids = IDs1 , na.rm=TRUE)
@@ -52,36 +49,34 @@ IDs5 <- read.ids(BT, stc=c(2,3,1))
 B_T<-  treeMean(rwl=BT, ids = IDs5 , na.rm=TRUE)
 colnames(B_T) <- paste0("BT", colnames(B_T))
 
-################################################################
-Bluff_Fairbanks <- read.rwl("IF_IT_2012.rwl", format="tucson")
-
+Bluff_Fairbanks <- read.rwl("IF_IT_2015.rwl", format="tucson")
 Denali_Forest <- read.rwl("AF_2012.rwl", format="tucson")
 Denali_Treeline <- read.rwl("AT_2012.rwl", format="tucson")
-
 Brooks_Range_Forest <- read.rwl("BF_2012.rwl", format="tucson")
 Brooks_Range_Treeline <- read.rwl("BT_2012.rwl", format="tucson")
 
-########################Combine datasets#########################
+### Combine dataset
 All_FB <- combine.rwl(F_B, Bluff_Fairbanks)
 All_DF <- combine.rwl(D_F, Denali_Forest)
 All_DT <- combine.rwl(D_T, Denali_Treeline)
 All_BF <- combine.rwl(B_F, Brooks_Range_Forest)
 All_BT<- combine.rwl(B_T, Brooks_Range_Treeline)
+```
+### Read tree DBH data
 
-#####################tree DBH datatree DBH data########################################
-fb<- read.csv("FB.csv",sep=",", dec=",")
+```{r}
+fb<- read.csv("IF_IT.csv",sep=",", dec=",")
 df <- read.csv("DF.csv",sep=",", dec=",")
 dt<- read.csv("DT.csv",sep=",", dec=",")
 bf<- read.csv("BF.csv",sep=",", dec=",")
 bt<- read.csv("BT.csv",sep=",", dec=",")
 
-###################################################################
-## Load tree DBH data
+## Load tree metadata (all trees)
 metadata <- read_excel("Metadata.xlsx")
 metadata
 selected_data <- metadata[, c("ID","Site", "ID_Tag", "DBH_cm")]
 
-#################data for each site#######################################
+## data for each site
 library(magrittr)
 filtered_data_DF <- selected_data %>%
   filter(grepl("Denali NP, forest",Site) | grepl("Denali NP, forest, belt",Site))
@@ -94,7 +89,10 @@ filtered_data_BF <- selected_data %>%
 filtered_data_BT <- selected_data %>%
   filter(grepl("Nutirwik Creek, S-facing slope, treeline", Site))
 
-##########Data which have greater than 0,01 distance to pith value
+### Data filtering
+
+```{r}
+## Data which have greater than 0,01 distance to pith value
 filtered_data_DF1 <- filtered_data_DF %>%
  filter(DBH_cm > 0.01)
 filtered_data_DT1 <- filtered_data_DT %>%
@@ -133,7 +131,6 @@ Bluff_Fairbanks_DBH <- Combined_Data %>%
   select(ID, DBH_cm)
 rownames(Bluff_Fairbanks_DBH) <- Bluff_Fairbanks_DBH$ID
 
-##################################################################
 # 1. Ensure 'df' has numeric values (if read.csv didn't handle dec="," correctly)
 df_clean <- df %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
@@ -153,8 +150,6 @@ Denali_Forest_DBH <- Combined_Data %>%
   select(ID, DBH_cm)
 rownames(Denali_Forest_DBH) <- Denali_Forest_DBH$ID
 
-
-##################################################################
 #  Ensure 'dT' has numeric values (if read.csv didn't handle dec="," correctly)
 dt_clean <- dt %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
@@ -174,7 +169,6 @@ Denali_Treeline_DBH <- Combined_Data %>%
   select(ID, DBH_cm)
 rownames(Denali_Treeline_DBH) <- Denali_Treeline_DBH$ID
 
-##################################################################
 #  Ensure 'bf' has numeric values (if read.csv didn't handle dec="," correctly)
 bf_clean <- bf %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
@@ -194,8 +188,6 @@ Brooks_Range_Forest_DBH <- Combined_Data %>%
   select(ID, DBH_cm)
 rownames(Brooks_Range_Forest_DBH) <- Brooks_Range_Forest_DBH$ID
 
-
-##################################################################
 #  Ensure 'bt' has numeric values (if read.csv didn't handle dec="," correctly)
 bt_clean <- bt %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
@@ -215,8 +207,6 @@ Brooks_Range_Treeline_DBH <- Combined_Data %>%
   select(ID, DBH_cm)
 rownames(Brooks_Range_Treeline_DBH) <- Brooks_Range_Treeline_DBH$ID
 
-
-##############################################
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Bluff_Fairbanks_DBH$DBH_cm)
 sapply(Bluff_Fairbanks_DBH, class)
@@ -224,8 +214,7 @@ B <- transform(Bluff_Fairbanks_DBH, DBH = as.numeric(DBH_cm))
 sapply(B, class)
 B[,2]<-B[,2]*10# # conversion in mm# # # cm to mm conversion
 rownames(B)<-B[,1]# # assure the correct assignment# # 
-head(B)
-B
+
 B<-B[colnames(All_FB ),]#using the column of AV.RWJF to order A
 Bluff_Fairbanks_DBH <- B[ ,c("ID","DBH_cm","DBH")]
 years <- as.numeric(rownames(All_FB ))  # years in the tree-ring data
@@ -262,12 +251,14 @@ if(any(is.na(Bluff_Fairbanks_DBH_Clean$ID))) {
   stop("There are still NAs in your ID column!")
 }
 
+```
+
+### BAI calculation
+
+```{r}
 # Run the calculation using the new 'Sub' object
 BAI_Bluff_Fairbanks <- bai.out(Bluff_Fairbanks_Sub, diam = Bluff_Fairbanks_DBH_Clean)
 
-#################################################################
-##############################################
-##############################################
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Denali_Forest_DBH$DBH_cm)
 sapply(Denali_Forest_DBH, class)
@@ -275,8 +266,6 @@ B <- transform(Denali_Forest_DBH, DBH = as.numeric(DBH_cm))
 sapply(B, class)
 B[,2]<-B[,2]*10# # conversion in mm# # # cm to mm conversion
 rownames(B)<-B[,1]# # assure the correct assignment# # 
-head(B)
-B
 B<-B[colnames(All_DF ),]#using the column of AV.RWJF to order A
 Denali_Forest_DBH <- B[ ,c("ID","DBH_cm","DBH")]
 years <- as.numeric(rownames(All_DF ))  # years in the tree-ring data
@@ -317,8 +306,6 @@ if(any(is.na(Denali_Forest_DBH_Clean$ID))) {
 BAI_Denali_Forest <- bai.out(Denali_Forest_Sub, diam = Denali_Forest_DBH_Clean)
 
 
-#####################################################################
-##############################################
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Denali_Treeline_DBH$DBH_cm)
 sapply(Denali_Treeline_DBH, class)
@@ -368,7 +355,6 @@ if(any(is.na(Denali_Treeline_DBH_Clean$ID))) {
 BAI_Denali_Treeline <- bai.out(Denali_Treeline_Sub, diam = Denali_Treeline_DBH_Clean)
 
 
-##############################################
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Brooks_Range_Forest_DBH$DBH_cm)
 sapply(Brooks_Range_Forest_DBH, class)
@@ -376,8 +362,6 @@ B <- transform(Brooks_Range_Forest_DBH, DBH = as.numeric(DBH_cm))
 sapply(B, class)
 B[,2]<-B[,2]*10# # conversion in mm# # # cm to mm conversion
 rownames(B)<-B[,1]# # assure the correct assignment# # 
-head(B)
-B
 B<-B[colnames(All_BF ),]#using the column of AV.RWJF to order A
 Brooks_Range_Forest_DBH <- B[ ,c("ID","DBH_cm","DBH")]
 years <- as.numeric(rownames(All_BF ))  # years in the tree-ring data
@@ -417,8 +401,6 @@ if(any(is.na(Brooks_Range_Forest_DBH_Clean$ID))) {
 # Run the calculation using the new 'Sub' object
 BAI_Brooks_Range_Forest <- bai.out(Brooks_Range_Forest_Sub, diam = Brooks_Range_Forest_DBH_Clean)
 
-#####################################################################
-##############################################
 # create data frame with tree IDs and diameters at coring height
 is.numeric(Brooks_Range_Treeline_DBH$DBH_cm)
 sapply(Brooks_Range_Treeline_DBH, class)
@@ -467,7 +449,9 @@ if(any(is.na(Brooks_Range_Treeline_DBH_Clean$ID))) {
 # Run the calculation using the new 'Sub' object
 BAI_Brooks_Range_Treeline <- bai.out(Brooks_Range_Treeline_Sub, diam = Brooks_Range_Treeline_DBH_Clean)
 
-##########################################
+### Write the output
+
+```{r}
 
 write.csv(as.data.frame(BAI_Bluff_Fairbanks), "Bluff_Fairbanks_output.csv", row.names = TRUE)
 write.csv(as.data.frame(BAI_Denali_Forest), "Denali_Forest_output.csv", row.names = TRUE)
@@ -488,3 +472,5 @@ write.csv(as.data.frame(DFDET), "Denali_Forest_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(DTDET), "Denali_Treeline_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(BFDET), "Brooks_Range_Forest_output1.csv", row.names = TRUE)
 write.csv(as.data.frame(BTDET), "Brooks_Range_Treeline_output1.csv", row.names = TRUE)
+
+```
