@@ -18,13 +18,13 @@ flowchart TB
     Mu --> Mur@{shape: procs, label: "MultiQC_raw_reads.html, MultiQC_trimmed_reads.html"}; 
     C --> V([VSEARCH]);
     V --> T([UNITE v9.0 database]);
-    T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R])
-    T --> Ta@{shape: procs, label: "Alaska_taxonomy.txt"} --> R([R])
+    T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R: Distribution_Growth.html; Metabarcoding.html; Metabarcoding_GAM_Growth-vs-RAF-diversity.html; Metabarcoding_Trophic-Guilds.html])
+    T --> Ta@{shape: procs, label: "Alaska_taxonomy.txt"} --> R
     Ta --> F([FUNGuild v.1.1 database]);
-    F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"} --> R([R])
-    R([R]) --> alpha([Alpha diversity])
-    R([R]) --> beta([Beta diversity])
-    R([R]) --> Guild([Guild relative abundance])
+    F --> Gu@{shape: procs, label: "Guilds and trophic modes of taxa"} --> R
+    R --> alpha([Alpha diversity])
+    R --> beta([Beta diversity])
+    R --> Guild([Guild relative abundance])
 
 
 Tree_data@{shape: procs, label: "Ring data, DBH"} --> R1([R: BAI_calculation.Rmd]) --> BAI@{shape: procs, label: "detrended BAI"} --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"} --> R
