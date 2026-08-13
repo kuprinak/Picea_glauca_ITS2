@@ -88,6 +88,7 @@ filtered_data_BF <- selected_data %>%
   filter(grepl("Nutirwik Creek, S-facing slope, forest", Site))
 filtered_data_BT <- selected_data %>%
   filter(grepl("Nutirwik Creek, S-facing slope, treeline", Site))
+```
 
 ### Data filtering
 
