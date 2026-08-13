@@ -1,5 +1,5 @@
 
-### These files are the comprehensive tree-ring dataset from the previous studies (before 2012).
+### These files contain the comprehensive tree-ring dataset from previous studies conducted before 2012.
 
 > [!TIP]
 > Interior Alaska: FB, Bluff_Fairbanks
