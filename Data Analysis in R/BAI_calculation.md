@@ -23,7 +23,7 @@ library(dplyr)
 #devtools::install_github("AllanBuras/dendRolAB")
 ```
 
-### Read the data
+### Read tree core data
 
 ```{r}
 FB <- read.rwl("FB_2022.rwl", format="tucson")
@@ -62,6 +62,7 @@ All_DT <- combine.rwl(D_T, Denali_Treeline)
 All_BF <- combine.rwl(B_F, Brooks_Range_Forest)
 All_BT<- combine.rwl(B_T, Brooks_Range_Treeline)
 ```
+
 ### Read tree DBH data
 
 ```{r}
@@ -90,30 +91,27 @@ filtered_data_BT <- selected_data %>%
   filter(grepl("Nutirwik Creek, S-facing slope, treeline", Site))
 ```
 
-### Data filtering
+### Data filtering: distance greater than 0.01 from the pith value
 
 ```{r}
-## Data which have greater than 0,01 distance to pith value
-filtered_data_DF1 <- filtered_data_DF %>%
- filter(DBH_cm > 0.01)
-filtered_data_DT1 <- filtered_data_DT %>%
-filter(DBH_cm > 0.01)
-filtered_data_FB1 <- filtered_data_FB %>%
-  filter(DBH_cm > 0.01)
-filtered_data_BF1 <- filtered_data_BF %>%
-  filter(DBH_cm > 0.01)
-filtered_data_BT1 <- filtered_data_BT %>%
-  filter(DBH_cm > 0.01)
+filtered_data_DF1 <- filtered_data_DF %>% filter(DBH_cm > 0.01)
+filtered_data_DT1 <- filtered_data_DT %>% filter(DBH_cm > 0.01)
+filtered_data_FB1 <- filtered_data_FB %>% filter(DBH_cm > 0.01)
+filtered_data_BF1 <- filtered_data_BF %>% filter(DBH_cm > 0.01)
+filtered_data_BT1 <- filtered_data_BT %>% filter(DBH_cm > 0.01)
 
-#####################################################
 Denali_Forest_DTP <- filtered_data_DF1 %>% select(ID,DBH_cm)
 Denali_Treeline_DTP <- filtered_data_DT1 %>% select(ID,DBH_cm)
 Brooks_Range_Forest_DTP <- filtered_data_BF1%>% select(ID,DBH_cm)
 Brooks_Range_Treeline_DTP <- filtered_data_BT1 %>% select(ID,DBH_cm)
 Bluff_Fairbanks_DTP <-filtered_data_FB1 %>% select(ID,DBH_cm)
 
-##################################################################
-# Ensure 'fb' has numeric values (if read.csv didn't handle dec="," correctly)
+```
+
+### Matching IDs: Interior Alaska (AKA Fairbanks)
+
+```{r}
+# 1. Ensure 'fb' has numeric values (if read.csv didn't handle dec="," correctly)
 fb_clean <- fb %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
   select(ID, DBH_cm) # Keep only the columns that match Bluff_Fairbanks_DTP
@@ -125,52 +123,65 @@ Bluff_Fairbanks_DTP$ID <- as.character(Bluff_Fairbanks_DTP$ID)
 #This creates DBH_cm.x (from fb_clean) and DBH_cm.y (from DTP)
 Combined_Data <- full_join(fb_clean, Bluff_Fairbanks_DTP, by = "ID")
 
-# 3. Create the final DBH column: 
-# "If fb_clean has a value, use it. Otherwise, use the DTP value."
+# 3. Create the final DBH column: # "If fb_clean has a value, use it. Otherwise, use the DTP value."
 Bluff_Fairbanks_DBH <- Combined_Data %>%
   mutate(DBH_cm = coalesce(DBH_cm.x, DBH_cm.y)) %>%
   select(ID, DBH_cm)
 rownames(Bluff_Fairbanks_DBH) <- Bluff_Fairbanks_DBH$ID
+
+```
+
+### Matching IDs: Alaska Range (AKA Denali) forest
+
+```{r}
 
 # 1. Ensure 'df' has numeric values (if read.csv didn't handle dec="," correctly)
 df_clean <- df %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
   select(ID, DBH_cm) # Keep only the columns that match Bluff_Fairbanks_DTP
 
-# Ensure IDs are the same type (Character) in both
+# 2. Ensure IDs are the same type (Character) in both
 df_clean$ID <- as.character(df_clean$ID)
 Denali_Forest_DTP$ID <- as.character(Denali_Forest_DTP$ID)
 # to bring both datasets together
 # This creates DBH_cm.x (from fb_clean) and DBH_cm.y (from DTP)
 Combined_Data <- full_join(df_clean, Denali_Forest_DTP, by = "ID")
 
-# Create the final DBH column: 
+# 3. Create the final DBH column: 
 # "If fb_clean has a value, use it. Otherwise, use the DTP value."
 Denali_Forest_DBH <- Combined_Data %>%
   mutate(DBH_cm = coalesce(DBH_cm.x, DBH_cm.y)) %>%
   select(ID, DBH_cm)
 rownames(Denali_Forest_DBH) <- Denali_Forest_DBH$ID
+```
 
-#  Ensure 'dT' has numeric values (if read.csv didn't handle dec="," correctly)
+### Matching IDs: Alaska Range (AKA Denali) treeline
+
+```{r}
+# 1. Ensure 'dT' has numeric values (if read.csv didn't handle dec="," correctly)
 dt_clean <- dt %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
   select(ID, DBH_cm) # Keep only the columns that match Bluff_Fairbanks_DTP
 
-# Ensure IDs are the same type (Character) in both
+# 2. Ensure IDs are the same type (Character) in both
 dt_clean$ID <- as.character(dt_clean$ID)
 Denali_Treeline_DTP$ID <- as.character(Denali_Treeline_DTP$ID)
 # Use a full_join to bring both datasets together
 # This creates DBH_cm.x (from fb_clean) and DBH_cm.y (from DTP)
 Combined_Data <- full_join(dt_clean, Denali_Treeline_DTP, by = "ID")
 
-#  Create the final DBH column: 
+# 3. Create the final DBH column: 
 # "If fb_clean has a value, use it. Otherwise, use the DTP value."
 Denali_Treeline_DBH <- Combined_Data %>%
   mutate(DBH_cm = coalesce(DBH_cm.x, DBH_cm.y)) %>%
   select(ID, DBH_cm)
 rownames(Denali_Treeline_DBH) <- Denali_Treeline_DBH$ID
+```
 
-#  Ensure 'bf' has numeric values (if read.csv didn't handle dec="," correctly)
+### Matching IDs: Brooks Range forest
+
+```{r}
+# 1. Ensure 'bf' has numeric values (if read.csv didn't handle dec="," correctly)
 bf_clean <- bf %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
   select(ID, DBH_cm) # Keep only the columns that match Bluff_Fairbanks_DTP
@@ -182,13 +193,17 @@ Brooks_Range_Forest_DTP$ID <- as.character(Brooks_Range_Forest_DTP$ID)
 # This creates DBH_cm.x (from fb_clean) and DBH_cm.y (from DTP)
 Combined_Data <- full_join(bf_clean, Brooks_Range_Forest_DTP, by = "ID")
 
-# Create the final DBH column: 
+# 3. Create the final DBH column: 
 # "If fb_clean has a value, use it. Otherwise, use the DTP value."
 Brooks_Range_Forest_DBH <- Combined_Data %>%
   mutate(DBH_cm = coalesce(DBH_cm.x, DBH_cm.y)) %>%
   select(ID, DBH_cm)
 rownames(Brooks_Range_Forest_DBH) <- Brooks_Range_Forest_DBH$ID
+```
 
+### Matching IDs: Brooks Range treeline
+
+```{r}
 #  Ensure 'bt' has numeric values (if read.csv didn't handle dec="," correctly)
 bt_clean <- bt %>%
   mutate(DBH_cm = as.numeric(gsub(",", ".", DBH_cm))) %>%
