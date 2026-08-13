@@ -10,7 +10,8 @@ A study examining the connection between root-associated fungi and the growth pe
 ```mermaid
 flowchart TB
 
-Tree_data@{shape: procs, label: "Tree data, BAI, soil pH"}--> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
+Tree_data@{shape: procs, label: "Ring data, DBH"} --> R1([R: "BAI_calculation.Rmd"]) --> BAI@{shape: procs, label: "detrended BAI"} --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
+Data@{shape: procs, label: "Tree age, height, soil pH"}   --> Sam_inf@{shape: procs, label: "Alaska_info.txt and Alaska_info_noR.txtt"};
 
 Sam_inf --> R([R])
 
