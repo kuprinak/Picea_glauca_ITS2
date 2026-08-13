@@ -6,7 +6,7 @@
 > 
 > Alaska Range treeline: DT.rwl, Denali_Treeline.rwl, Denali_Treeline (2).rwl
 > 
-> Alaska Range forest: DF.rwl, Denali_Forest.rwl, Denali_Forest_2012
+> Alaska Range forest: DF.rwl, Denali_Forest.rwl, Denali_Forest_2012.rwl
 > 
 > Brooks Range treeline: BT.rwl, Brooks_Range_Treeline.rwl
 > 
