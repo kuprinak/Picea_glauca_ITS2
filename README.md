@@ -15,7 +15,7 @@ flowchart TB
     Fa --> Mu([MultiQC]);
     B --> C@{shape: procs, label: "Trimmed reads (NCBI: PRJNA1335163)"};
     C --> Fa([FastQC]);
-    Mu --> Mur@{shape: procs, label: "MultiQC_raw_reads.html, MultiQC_trimmed_reads.html"}; 
+    Mu --> Mur@{shape: procs, label: "MultiQC_report_trimmed_reads.html"}; 
     C --> V([VSEARCH]);
     V --> T([UNITE v9.0 database]);
     T --> CV@{shape: procs, label: "Alaska_counts.txt"} --> R([R: Distribution_Growth.html, Metabarcoding.html, Metabarcoding_GAM_Growth-vs-RAF-diversity.html, Metabarcoding_Trophic-Guilds.html])
