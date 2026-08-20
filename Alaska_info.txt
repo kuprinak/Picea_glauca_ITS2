@@ -1,4 +1,4 @@
-Sample	Plot	Location	Ecotope
+Sample	Plot	Site	Habitat
 45201	IT	Interior	treeline
 45207	IT	Interior	treeline
 45224	IF	Interior	forest
