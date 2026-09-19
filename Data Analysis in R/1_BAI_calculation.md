@@ -87,6 +87,8 @@ filtered_data_BF <- selected_data[grepl("Nutirwik Creek, S-facing slope, forest"
 filtered_data_BT <- selected_data[grepl("Nutirwik Creek, S-facing slope, treeline", selected_data$Site), ]
 ```
 
+# BAI
+
 ## BAI calculation: Interior Alaska (AKA Fairbanks)
 
 ```{r}
@@ -141,8 +143,6 @@ FB_po <- FB_po[match(colnames(All_FB), FB_po$series), ]
 cat("Trees in regional curve:", ncol(All_FB), "\n")
 FBRCS <- rcs(rwl = All_FB, po = FB_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
-
-# BAI
 
 ## BAI calculation: Alaska Range (AKA Denali) forest
 
