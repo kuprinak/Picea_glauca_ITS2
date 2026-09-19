@@ -6,9 +6,9 @@ output: html_document
 ---
 
 ## Three growth measures for the 2022 trees
-## 1. BAI: raw basal area increment (bai.out with the measured DBH)
-## 2. detBAI: BAI detrended with a 30-year spline fitted to log(BAI)
-## 3. rcsBAI: BAI divided by the regional curve (RCS) of its plot, built from all 2012, 2015 and 2022 cores
+#### 1. BAI: raw basal area increment (bai.out with the measured DBH)
+#### 2. detBAI: BAI detrended with a 30-year spline fitted to log(BAI)
+#### 3. rcsBAI: BAI divided by the regional curve (RCS) of its plot, built from all 2012, 2015 and 2022 cores
 
 ### Packages
 
@@ -87,7 +87,7 @@ filtered_data_BF <- selected_data[grepl("Nutirwik Creek, S-facing slope, forest"
 filtered_data_BT <- selected_data[grepl("Nutirwik Creek, S-facing slope, treeline", selected_data$Site), ]
 ```
 
-### BAI calculation: Interior Alaska (AKA Fairbanks)
+## BAI calculation: Interior Alaska (AKA Fairbanks)
 
 ```{r}
 # DBH in mm, in the same order as the tree columns
@@ -142,7 +142,9 @@ cat("Trees in regional curve:", ncol(All_FB), "\n")
 FBRCS <- rcs(rwl = All_FB, po = FB_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
 
-### BAI calculation: Alaska Range (AKA Denali) forest
+# BAI
+
+## BAI calculation: Alaska Range (AKA Denali) forest
 
 ```{r}
 # DBH in mm, in the same order as the tree columns
@@ -197,7 +199,7 @@ cat("Trees in regional curve:", ncol(All_DF), "\n")
 DFRCS <- rcs(rwl = All_DF, po = DF_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
 
-### BAI calculation: Alaska Range (AKA Denali) treeline
+## BAI calculation: Alaska Range (AKA Denali) treeline
 
 ```{r}
 # DBH in mm, in the same order as the tree columns
@@ -252,7 +254,7 @@ cat("Trees in regional curve:", ncol(All_DT), "\n")
 DTRCS <- rcs(rwl = All_DT, po = DT_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
 
-### BAI calculation: Brooks Range forest
+## BAI calculation: Brooks Range forest
 
 ```{r}
 # DBH in mm, in the same order as the tree columns
@@ -307,7 +309,7 @@ cat("Trees in regional curve:", ncol(All_BF), "\n")
 BFRCS <- rcs(rwl = All_BF, po = BF_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
 
-### BAI calculation: Brooks Range treeline
+## BAI calculation: Brooks Range treeline
 
 ```{r}
 # DBH in mm, in the same order as the tree columns
@@ -362,7 +364,7 @@ cat("Trees in regional curve:", ncol(All_BT), "\n")
 BTRCS <- rcs(rwl = All_BT, po = BT_po, biweight = TRUE, ratios = TRUE, rc.out = TRUE, make.plot = FALSE)
 ```
 
-### Regional curves
+# Regional curves
 
 ```{r}
 par(mfrow = c(2, 3))
@@ -422,7 +424,7 @@ summary(res$BAI_5y - info$BAI_5y)
 summary(res$detBAI_5y - info$detBAI_5y)
 ```
 
-### Write the output
+## Write the output
 
 ```{r}
 # annual values 1990-2022 per sample (for ST1)
