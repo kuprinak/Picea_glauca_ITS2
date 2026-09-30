@@ -1,5 +1,5 @@
 ---
-title: "Alaska_Growth"
+title: "Growth_pH"
 author: "Kristina Kuprina"
 date: "`r Sys.Date()`"
 output:
