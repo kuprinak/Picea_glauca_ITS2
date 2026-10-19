@@ -277,4 +277,3 @@ vsearch --usearch_global ./output/OTUs.fasta \
 ```{bash}
 python3 Guilds_v1.1.py -otu FunGuild_OTU.txt -db fungi 
 ```
-Output: "..."
